@@ -26,15 +26,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # ရည်ရွယ်ချက်: Stock.html သို့မဟုတ် stock.html ရှိပါက index.html အဖြစ် ပြောင်းလဲရန်
-      - name: Dynamic Entry Point Setup
+      # dashboard.html ကို index.html အဖြစ် ကူးယူခြင်း
+      - name: Prepare Entry Point
         run: |
-          if [ -f "Stock.html" ]; then
-            cp Stock.html index.html
-          elif [ -f "stock.html" ]; then
-            cp stock.html index.html
+          if [ -f "dashboard.html" ]; then
+            cp dashboard.html index.html
+          elif [ -f "Dashboard.html" ]; then
+            cp Dashboard.html index.html
           else
-            echo "Error: Dashboard HTML file not found!" && exit 1
+            echo "Error: dashboard.html file not found!" && exit 1
           fi
 
       - name: Upload Artifact
