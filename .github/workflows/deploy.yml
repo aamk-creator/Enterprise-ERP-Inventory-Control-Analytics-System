@@ -2,9 +2,8 @@ name: Deploy Enterprise Dashboard to GitHub Pages
 
 on:
   push:
-    branches: ["main"] # main branch ပေါ် ကုဒ် push လုပ်တိုင်း automatic အလုပ်လုပ်မည်
+    branches: ["main"]
 
-# GitHub Pages သို့ တင်ရန်အတွက် ခွင့်ပြုချက် (Permissions) တောင်းခံခြင်း
 permissions:
   contents: read
   pages: write
@@ -24,18 +23,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # GitHub Pages အတွက် သတ်မှတ်ချက်များ ချိန်ညှိခြင်း
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Stock.html ကို ပင်မစာမျက်နှာ index.html အဖြစ် ပြောင်းလဲပေးခြင်း (GitHub Pages သတ်မှတ်ချက်အရ)
-      - name: Prepare Entry Point
-        run: cp Stock.html index.html
+      # ရည်ရွယ်ချက်: Stock.html သို့မဟုတ် stock.html ရှိပါက index.html အဖြစ် ပြောင်းလဲရန်
+      - name: Dynamic Entry Point Setup
+        run: |
+          if [ -f "Stock.html" ]; then
+            cp Stock.html index.html
+          elif [ -f "stock.html" ]; then
+            cp stock.html index.html
+          else
+            echo "Error: Dashboard HTML file not found!" && exit 1
+          fi
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # လက်ရှိ folder ထဲက ဖိုင်အားလုံးကို တင်မည်
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deployment
